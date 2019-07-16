@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/default_refresh_header_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="bottom">
+
+    <RelativeLayout
+        android:id="@+id/default_header_content"
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/dp_80"
+        android:paddingTop="@dimen/dp_10">
+
+        <LinearLayout
+            android:id="@+id/default_header_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:minWidth="@dimen/dp_100"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/default_refresh_status_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/recycler_header_hint_normal" />
+
+            <TextView
+                android:id="@+id/last_refresh_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_3"
+                android:textSize="@dimen/sp_12" />
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/default_header_arrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dp_35"
+            android:layout_marginRight="@dimen/dp_10"
+            android:layout_toLeftOf="@id/default_header_text"
+            app:srcCompat="@drawable/ic_default_pull_to_refresh_grey"
+            tools:ignore="VectorDrawableCompat" />
+
+        <com.mlethe.library.recyclerview.progress.SimpleViewSwitcher
+            android:id="@+id/default_header_progressbar"
+            android:layout_width="@dimen/dp_30"
+            android:layout_height="@dimen/dp_30"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dp_40"
+            android:layout_marginRight="@dimen/dp_10"
+            android:layout_toLeftOf="@id/default_header_text"
+            android:visibility="invisible" />
+
+    </RelativeLayout>
+
+</LinearLayout>
