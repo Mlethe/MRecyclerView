@@ -2,6 +2,6 @@
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/text_view"
     android:gravity="center"
-    android:textSize="@dimen/sp_14"
+    android:textSize="14sp"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/dp_50" />
+    android:layout_height="50dp" />

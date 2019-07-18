@@ -1,8 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">MRecyclerView</string>
-    <string name="error">Network error</string>
-    <string name="network_err">Simulation network error</string>
-    <string name="empty_network_error">Network error, Click Retry</string>
-    <string name="empty_no_data">There is no data, Click Retry</string>
-    <string name="brvah_loading">正在加载中...</string>
+    <string name="empty_no_data">未查询到相关数据，点击重试</string>
+    <string name="empty_network_error">网络不给力，点击刷新</string>
+    <string name="empty_loading">加载数据中，请稍后...</string>
 </resources>

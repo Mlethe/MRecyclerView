@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/dp_50"
+    android:layout_height="@dimen/recyclerview_loading_footer_height"
     android:gravity="center"
     android:orientation="horizontal"
-    android:padding="@dimen/dp_3">
+    android:padding="3dp">
 
     <com.mlethe.library.recyclerview.progress.SimpleViewSwitcher
         android:id="@+id/recycler_foot_progress"
-        android:layout_width="@dimen/dp_30"
-        android:layout_height="@dimen/dp_30" />
+        android:layout_width="@dimen/recyclerview_switcher_size"
+        android:layout_height="@dimen/recyclerview_switcher_size" />
 
     <TextView
         android:id="@+id/recycler_foot_more"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:padding="@dimen/dp_5"
+        android:padding="5dp"
         android:text="@string/loading" />
 
 </LinearLayout>

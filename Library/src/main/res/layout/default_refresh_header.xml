@@ -10,8 +10,8 @@
     <RelativeLayout
         android:id="@+id/default_header_content"
         android:layout_width="fill_parent"
-        android:layout_height="@dimen/dp_80"
-        android:paddingTop="@dimen/dp_10">
+        android:layout_height="@dimen/recyclerview_refresh_header_height"
+        android:paddingTop="10dp">
 
         <LinearLayout
             android:id="@+id/default_header_text"
@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:gravity="center"
-            android:minWidth="@dimen/dp_100"
+            android:minWidth="100dp"
             android:orientation="vertical">
 
             <TextView
@@ -32,8 +32,9 @@
                 android:id="@+id/last_refresh_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dp_3"
-                android:textSize="@dimen/sp_12" />
+                android:visibility="gone"
+                android:layout_marginTop="3dp"
+                android:textSize="@dimen/recyclerview_refresh_time_size" />
 
         </LinearLayout>
 
@@ -42,19 +43,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/dp_35"
-            android:layout_marginRight="@dimen/dp_10"
+            android:layout_marginLeft="@dimen/recyclerview_image_left_margin"
+            android:layout_marginRight="@dimen/recyclerview_image_right_margin"
             android:layout_toLeftOf="@id/default_header_text"
             app:srcCompat="@drawable/ic_default_pull_to_refresh_grey"
             tools:ignore="VectorDrawableCompat" />
 
         <com.mlethe.library.recyclerview.progress.SimpleViewSwitcher
             android:id="@+id/default_header_progressbar"
-            android:layout_width="@dimen/dp_30"
-            android:layout_height="@dimen/dp_30"
+            android:layout_width="@dimen/recyclerview_switcher_size"
+            android:layout_height="@dimen/recyclerview_switcher_size"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/dp_40"
-            android:layout_marginRight="@dimen/dp_10"
+            android:layout_marginLeft="@dimen/recyclerview_switcher_left_margin"
+            android:layout_marginRight="@dimen/recyclerview_switcher_right_margin"
             android:layout_toLeftOf="@id/default_header_text"
             android:visibility="invisible" />
 
