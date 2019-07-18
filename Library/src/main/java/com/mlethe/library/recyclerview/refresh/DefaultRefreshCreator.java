@@ -93,6 +93,7 @@ public class DefaultRefreshCreator extends BaseRefreshCreator {
     public void onPull(int currentDragHeight, int viewHeight, int state) {
         long sharedPreLong = sharedPre.getLong(KEY_LAST_UPDATE_TIME, System.currentTimeMillis());
         mHeaderTimeView.setText(String.format(mContent.getString(R.string.recycler_header_last_time), friendlyTime(new Date(sharedPreLong))));
+        mHeaderTimeView.setVisibility(View.VISIBLE);
         mArrowImageView.setVisibility(View.VISIBLE);
         if(mProgressBar != null){
             mProgressBar.setVisibility(View.INVISIBLE);
