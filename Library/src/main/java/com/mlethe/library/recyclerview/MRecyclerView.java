@@ -1,10 +1,7 @@
 package com.mlethe.library.recyclerview;
 
 import android.animation.ValueAnimator;
-import android.app.Activity;
-import android.app.Application;
 import android.content.Context;
-import android.os.Bundle;
 import android.os.Handler;
 import android.util.AttributeSet;
 import android.view.Gravity;
@@ -17,6 +14,7 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
 import com.google.android.material.appbar.AppBarLayout;
+import com.mlethe.library.recyclerview.adapter.BaseAdapter;
 import com.mlethe.library.recyclerview.load.BaseLoadCreator;
 import com.mlethe.library.recyclerview.load.DefaultLoadCreator;
 import com.mlethe.library.recyclerview.refresh.BaseRefreshCreator;
@@ -39,7 +37,7 @@ public class MRecyclerView extends RecyclerView {
     private static final int BASE_ITEM_TYPE_FOOTER = Integer.MAX_VALUE - 10000;
 
     private SparseArrayCompat<View> mHeaderViews = new SparseArrayCompat<>();
-    private SparseArrayCompat<View> mFootViews = new SparseArrayCompat<>();
+    private SparseArrayCompat<View> mFooterViews = new SparseArrayCompat<>();
 
     // 刷新view
     private static final int REFRESH_VIEW = Integer.MAX_VALUE - 1;
@@ -139,7 +137,7 @@ public class MRecyclerView extends RecyclerView {
      * when you call this,better don't call some kind of functions like
      * RefreshHeader,because the reference of mRefreshHeader is NULL.
      */
-    private void destroy() {
+    private void release() {
         mRefreshHeader = null;
         if (mRefreshCreator != null) {
             mRefreshCreator.destroy();
@@ -148,13 +146,14 @@ public class MRecyclerView extends RecyclerView {
         if (mHeaderViews != null) {
             mHeaderViews.clear();
         }
-        if (mFootViews != null) {
-            mFootViews.clear();
+        if (mFooterViews != null) {
+            mFooterViews.clear();
         }
         if (mLoadViewCreator != null) {
             mLoadViewCreator.destroy();
             mLoadViewCreator = null;
         }
+        setAdapter(null);
         mParent = null;
         mLayout = null;
         mEmptyView = null;
@@ -223,7 +222,8 @@ public class MRecyclerView extends RecyclerView {
      */
     public void loadMoreComplete() {
         isLoading = false;
-        mLoadViewCreator.onLoadStop();
+        if (mLoadViewCreator != null)
+            mLoadViewCreator.onLoadStop();
     }
 
     public void disable() {
@@ -246,7 +246,8 @@ public class MRecyclerView extends RecyclerView {
         isLoadFail = false;
         isLoadNoData = false;
         isLoading = true;
-        mLoadViewCreator.onLoading();
+        if (mLoadViewCreator != null)
+            mLoadViewCreator.onLoading();
     }
 
     /**
@@ -256,7 +257,8 @@ public class MRecyclerView extends RecyclerView {
         isLoadFail = true;
         isLoadNoData = false;
         isLoading = false;
-        mLoadViewCreator.onLoadFail();
+        if (mLoadViewCreator != null)
+            mLoadViewCreator.onLoadFail();
     }
 
     /**
@@ -295,7 +297,7 @@ public class MRecyclerView extends RecyclerView {
      * @param view
      */
     public MRecyclerView addFooterView(View view) {
-        mFootViews.put(mFootViews.size() + BASE_ITEM_TYPE_FOOTER, view);
+        mFooterViews.put(mFooterViews.size() + BASE_ITEM_TYPE_FOOTER, view);
         if (mWrapAdapter != null)
             mWrapAdapter.notifyItemInserted(getRefreshCount() + getHeadersCount() + mWrapAdapter.getOriginalAdapter().getItemCount() + getFootersCount());
         return this;
@@ -323,9 +325,9 @@ public class MRecyclerView extends RecyclerView {
      * @param view
      */
     public void removeFooterView(View view) {
-        int index = mFootViews.indexOfValue(view);
+        int index = mFooterViews.indexOfValue(view);
         if (index < 0) return;
-        mFootViews.removeAt(index);
+        mFooterViews.removeAt(index);
         if (mWrapAdapter != null) {
             int position = getRefreshCount() + getHeadersCount() + mWrapAdapter.getOriginalAdapter().getItemCount() + index;
             mWrapAdapter.getOriginalAdapter().notifyItemRemoved(position);
@@ -348,7 +350,7 @@ public class MRecyclerView extends RecyclerView {
      * @return
      */
     public int getFootersCount() {
-        return mFootViews.size();
+        return mFooterViews.size();
     }
 
     /**
@@ -375,7 +377,7 @@ public class MRecyclerView extends RecyclerView {
         return 0;
     }
 
-    public MRecyclerView setEmptyViewOnclickListener(View.OnClickListener onclickListener){
+    public MRecyclerView setEmptyViewOnclickListener(View.OnClickListener onclickListener) {
         mEmptyView.setOnClickListener(onclickListener);
         return this;
     }
@@ -527,12 +529,14 @@ public class MRecyclerView extends RecyclerView {
     @Override
     public void setAdapter(Adapter adapter) {
         if (mWrapAdapter != null) {
-            adapter.unregisterAdapterDataObserver(mDataObserver);
+            if (adapter != null)
+                adapter.unregisterAdapterDataObserver(mDataObserver);
             mWrapAdapter = null;
         }
         mWrapAdapter = new WrapAdapter(adapter);
         super.setAdapter(mWrapAdapter);
-        adapter.registerAdapterDataObserver(mDataObserver);
+        if (adapter != null)
+            adapter.registerAdapterDataObserver(mDataObserver);
 //        mDataObserver.onChanged();
     }
 
@@ -628,7 +632,8 @@ public class MRecyclerView extends RecyclerView {
         switch (state) {
             case STATE_NORMAL:  // 下拉刷新
             case STATE_RELEASE_TO_REFRESH:  // 释放立即刷新
-                mRefreshCreator.onPull(height, mMeasuredHeight, state);
+                if (mRefreshCreator != null)
+                    mRefreshCreator.onPull(height, mMeasuredHeight, state);
                 break;
             case STATE_REFRESHING:  // 正在刷新...
                 resetLoad();
@@ -642,10 +647,12 @@ public class MRecyclerView extends RecyclerView {
                 }
                 break;
             case STATE_DONE:    // 刷新完成
-                mRefreshCreator.onRefreshStop();
+                if (mRefreshCreator != null)
+                    mRefreshCreator.onRefreshStop();
                 break;
             case STATE_FAIL:    // 刷新失败
-                mRefreshCreator.onRefreshFail();
+                if (mRefreshCreator != null)
+                    mRefreshCreator.onRefreshFail();
                 break;
             default:
         }
@@ -676,6 +683,8 @@ public class MRecyclerView extends RecyclerView {
      */
     private void setVisibleHeight(int height) {
         if (height < 0) height = 0;
+        if (mRefreshHeader == null)
+            return;
         View childView = mRefreshHeader.getChildAt(0);
         ViewGroup.LayoutParams lp = childView.getLayoutParams();
         lp.height = height;
@@ -686,6 +695,8 @@ public class MRecyclerView extends RecyclerView {
      * 获取显示高度
      */
     private int getVisibleHeight() {
+        if (mRefreshHeader == null)
+            return 0;
         View childView = mRefreshHeader.getChildAt(0);
         ViewGroup.LayoutParams lp = childView.getLayoutParams();
         return lp.height;
@@ -806,7 +817,7 @@ public class MRecyclerView extends RecyclerView {
                             && adjAdapterItemCount >= layoutManager.getChildCount()
                             && !isLoadNoData
                             && (status == STATE_NORMAL || status == STATE_RELEASE_TO_REFRESH)
-                    ) {
+            ) {
                 loading();
                 mLoadListener.onLoadMore();
             }
@@ -841,7 +852,7 @@ public class MRecyclerView extends RecyclerView {
 
         @Override
         public void onItemRangeChanged(int positionStart, int itemCount) {
-            if (mWrapAdapter != null){
+            if (mWrapAdapter != null) {
                 if (itemCount > 1) {
                     mWrapAdapter.notifyItemRangeChanged(positionStart + getHeaders_includingRefreshCount(), itemCount + getFootersCount() + getLoadingCount());
                 } else {
@@ -853,7 +864,7 @@ public class MRecyclerView extends RecyclerView {
 
         @Override
         public void onItemRangeChanged(int positionStart, int itemCount, Object payload) {
-            if (mWrapAdapter != null){
+            if (mWrapAdapter != null) {
                 if (itemCount > 1) {
                     mWrapAdapter.notifyItemRangeChanged(positionStart + getHeaders_includingRefreshCount(), itemCount + getFootersCount() + getLoadingCount(), payload);
                 } else {
@@ -913,7 +924,7 @@ public class MRecyclerView extends RecyclerView {
                 return mHeaderViews.keyAt(position - getRefreshCount());
             }
             if (isFooterViewPos(position)) {
-                return mFootViews.keyAt(position - getRefreshCount() - getHeadersCount() - adapter.getItemCount());
+                return mFooterViews.keyAt(position - getRefreshCount() - getHeadersCount() - adapter.getItemCount());
             }
             if (isLoadViewPos(position)) {
                 return LOADING_VIEW;
@@ -932,8 +943,8 @@ public class MRecyclerView extends RecyclerView {
             } else if (mHeaderViews.get(viewType) != null) {
                 ViewHolder holder = new SimpleViewHolder(mHeaderViews.get(viewType));
                 return holder;
-            } else if (mFootViews.get(viewType) != null) {
-                ViewHolder holder = new SimpleViewHolder(mFootViews.get(viewType));
+            } else if (mFooterViews.get(viewType) != null) {
+                ViewHolder holder = new SimpleViewHolder(mFooterViews.get(viewType));
                 return holder;
             } else if (viewType == LOADING_VIEW) {
                 View loadView = mLoadViewCreator.getLoadView(getContext(), parent);
@@ -963,7 +974,7 @@ public class MRecyclerView extends RecyclerView {
                 });
                 return;
             }
-            int  realPos = position - getHeaders_includingRefreshCount();
+            int realPos = position - getHeaders_includingRefreshCount();
             if (adapter != null)
                 adapter.onBindViewHolder(holder, realPos);
         }
@@ -984,7 +995,7 @@ public class MRecyclerView extends RecyclerView {
                     @Override
                     public int getSpanSize(int position) {
                         int viewType = getItemViewType(position);
-                        if (viewType == REFRESH_VIEW || mHeaderViews.get(viewType) != null || mFootViews.get(viewType) != null || viewType == LOADING_VIEW) {
+                        if (viewType == REFRESH_VIEW || mHeaderViews.get(viewType) != null || mFooterViews.get(viewType) != null || viewType == LOADING_VIEW) {
                             return gridLayoutManager.getSpanCount();
                         }
                         if (spanSizeLookup != null) {
@@ -1113,8 +1124,6 @@ public class MRecyclerView extends RecyclerView {
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-        // 绑定activity的生命周期管理
-        ((Activity) getContext()).getApplication().registerActivityLifecycleCallbacks(mActivityLifecycleCallbacks);
         //解决和CollapsingToolbarLayout冲突的问题
         AppBarLayout appBarLayout = null;
         ViewParent p = getParent();
@@ -1147,49 +1156,9 @@ public class MRecyclerView extends RecyclerView {
 
     @Override
     protected void onDetachedFromWindow() {
-        // 解除绑定
-        ((Activity) getContext()).getApplication().unregisterActivityLifecycleCallbacks(mActivityLifecycleCallbacks);
+        release();
         super.onDetachedFromWindow();
     }
-
-    private Application.ActivityLifecycleCallbacks mActivityLifecycleCallbacks = new Application.ActivityLifecycleCallbacks() {
-        @Override
-        public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
-
-        }
-
-        @Override
-        public void onActivityStarted(Activity activity) {
-
-        }
-
-        @Override
-        public void onActivityResumed(Activity activity) {
-
-        }
-
-        @Override
-        public void onActivityPaused(Activity activity) {
-
-        }
-
-        @Override
-        public void onActivityStopped(Activity activity) {
-
-        }
-
-        @Override
-        public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
-
-        }
-
-        @Override
-        public void onActivityDestroyed(Activity activity) {
-            if (activity == getContext()) {
-                destroy();
-            }
-        }
-    };
 
     /**
      * add by LinGuanHong below

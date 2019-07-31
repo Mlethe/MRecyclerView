@@ -1,19 +1,13 @@
 apply plugin: 'com.android.library'
 
-apply plugin:'com.github.dcendents.android-maven'
-
-group='com.github.Mlethe'
-
-version = '1.0.1'
-
 android {
     compileSdkVersion 29
 
     defaultConfig {
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 1
-        versionName version
+        versionCode 2
+        versionName '1.0.2'
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
@@ -32,6 +26,6 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     implementation 'androidx.appcompat:appcompat:1.0.2'
-    implementation 'com.google.android.material:material:1.1.0-alpha08'
+    implementation 'com.google.android.material:material:1.1.0-alpha09'
     api 'androidx.recyclerview:recyclerview:1.0.2'
 }

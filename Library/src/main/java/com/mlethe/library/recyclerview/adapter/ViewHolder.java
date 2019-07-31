@@ -1,12 +1,16 @@
 package com.mlethe.library.recyclerview.adapter;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.util.SparseArray;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.ColorInt;
+import androidx.annotation.DrawableRes;
 import androidx.annotation.IdRes;
+import androidx.annotation.StringRes;
 import androidx.recyclerview.widget.RecyclerView;
 
 /**
@@ -25,6 +29,10 @@ public class ViewHolder extends RecyclerView.ViewHolder {
 
     /**
      * 设置TextView文本
+     *
+     * @param viewId
+     * @param text
+     * @return
      */
     public ViewHolder setText(int viewId, CharSequence text) {
         TextView tv = getView(viewId);
@@ -34,17 +42,20 @@ public class ViewHolder extends RecyclerView.ViewHolder {
 
     /**
      * 设置TextView文本
+     *
      * @param viewId
-     * @param value
+     * @param resid
      * @return
      */
-    public ViewHolder setText(int viewId, int value) {
-        setText(viewId, String.valueOf(value));
+    public ViewHolder setText(int viewId, @StringRes int resid) {
+        TextView tv = getView(viewId);
+        tv.setText(resid);
         return this;
     }
 
     /**
      * 设置TextView文本
+     *
      * @param viewId
      * @param value
      * @return
@@ -56,6 +67,7 @@ public class ViewHolder extends RecyclerView.ViewHolder {
 
     /**
      * 设置TextView文本
+     *
      * @param viewId
      * @param value
      * @return
@@ -67,6 +79,7 @@ public class ViewHolder extends RecyclerView.ViewHolder {
 
     /**
      * 设置TextView文本
+     *
      * @param viewId
      * @param value
      * @return
@@ -91,6 +104,42 @@ public class ViewHolder extends RecyclerView.ViewHolder {
     }
 
     /**
+     * 设置背景
+     *
+     * @param viewId
+     * @param background
+     * @return
+     */
+    public ViewHolder setBackground(int viewId, Drawable background) {
+        getView(viewId).setBackground(background);
+        return this;
+    }
+
+    /**
+     * 设置背景资源
+     *
+     * @param viewId
+     * @param resid
+     * @return
+     */
+    public ViewHolder setBackgroundResource(int viewId, @DrawableRes int resid) {
+        getView(viewId).setBackgroundResource(resid);
+        return this;
+    }
+
+    /**
+     * 设置背景颜色
+     *
+     * @param viewId
+     * @param color
+     * @return
+     */
+    public ViewHolder setBackgroundColor(int viewId, @ColorInt int color) {
+        getView(viewId).setBackgroundColor(color);
+        return this;
+    }
+
+    /**
      * 设置View的Visibility
      */
     public ViewHolder setViewVisibility(int viewId, int visibility) {
@@ -100,6 +149,7 @@ public class ViewHolder extends RecyclerView.ViewHolder {
 
     /**
      * 获取View的Visibility
+     *
      * @param viewId
      * @return
      */
@@ -118,6 +168,7 @@ public class ViewHolder extends RecyclerView.ViewHolder {
 
     /**
      * 设置View的点击事件
+     *
      * @param viewId
      * @param listener
      * @return
@@ -129,6 +180,7 @@ public class ViewHolder extends RecyclerView.ViewHolder {
 
     /**
      * 设置View的长按事件
+     *
      * @param viewId
      * @param listener
      * @return
@@ -169,6 +221,7 @@ public class ViewHolder extends RecyclerView.ViewHolder {
 
     /**
      * 设置字体颜色
+     *
      * @param viewId
      * @param color
      */

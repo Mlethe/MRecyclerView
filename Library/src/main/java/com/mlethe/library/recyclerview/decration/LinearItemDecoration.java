@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.View;
 
 import com.mlethe.library.recyclerview.MRecyclerView;
@@ -66,7 +67,7 @@ public class LinearItemDecoration extends RecyclerView.ItemDecoration{
     private boolean isMRecyclerView(int position, RecyclerView parent, RecyclerView.State state) {
         if (parent instanceof MRecyclerView){
             MRecyclerView recyclerView = (MRecyclerView) parent;
-            if (position <= recyclerView.getHeadersCount() + recyclerView.getRefreshCount()) {
+            if (position < recyclerView.getHeadersCount() + recyclerView.getRefreshCount()) {
                 return true;
             }
             int minimum = recyclerView.getHeadersCount() + recyclerView.getAdapter().getItemCount() + recyclerView.getRefreshCount();

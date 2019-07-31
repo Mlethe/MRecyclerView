@@ -4,11 +4,25 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <com.mlethe.library.recyclerview.MRecyclerView
-        android:id="@+id/test_rv"
+    <Button
+        android:id="@+id/normal_btn"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="wrap_content"
+        android:text="正常的list"/>
+
+    <Button
+        android:id="@+id/view_pager_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="ViewPager"/>
+
+    <Button
+        android:id="@+id/header_footer_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="头部和底部"/>
 
 </LinearLayout>
