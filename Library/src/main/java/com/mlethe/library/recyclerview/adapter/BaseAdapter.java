@@ -147,6 +147,7 @@ public abstract class BaseAdapter<T, VH extends RecyclerView.ViewHolder> extends
         mData = null;
         mLayoutId = 0;
         mMultiTypeSupport = null;
+        mOnConvertListener = null;
         mItemClickListener = null;
         mLongClickListener = null;
     }
