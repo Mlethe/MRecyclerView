@@ -38,22 +38,25 @@ public class HeaderFooterActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 adapter.setEmptyView(R.layout.loading_view, recyclerView);
-                mHandler.postDelayed(() -> {
-                    List<String> data = getData(15, 1);
-                    dataList.clear();
-                    dataList.addAll(data);
-                    adapter.notifyDataSetChanged();
+                mHandler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        List<String> data = getData(15, 1);
+                        dataList.clear();
+                        dataList.addAll(data);
+                        adapter.notifyDataSetChanged();
+                    }
                 }, 2000);
             }
         });
-        View header = LayoutInflater.from(this).inflate(R.layout.header_view, recyclerView, false);
+        final View header = LayoutInflater.from(this).inflate(R.layout.header_view, recyclerView, false);
         header.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 adapter.removeHeaderView(header);
             }
         });
-        View footer = LayoutInflater.from(this).inflate(R.layout.footer_view, recyclerView, false);
+        final View footer = LayoutInflater.from(this).inflate(R.layout.footer_view, recyclerView, false);
         footer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
