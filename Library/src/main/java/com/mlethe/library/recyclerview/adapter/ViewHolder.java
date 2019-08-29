@@ -1,6 +1,7 @@
 package com.mlethe.library.recyclerview.adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.util.SparseArray;
 import android.view.View;
@@ -163,6 +164,18 @@ public class ViewHolder extends RecyclerView.ViewHolder {
     public ViewHolder setImageResource(int viewId, int resourceId) {
         ImageView imageView = getView(viewId);
         imageView.setImageResource(resourceId);
+        return this;
+    }
+
+    /**
+     * 设置ImageView Bitmap
+     * @param viewId
+     * @param bitmap
+     * @return
+     */
+    public ViewHolder setImageBitmap(int viewId, Bitmap bitmap) {
+        ImageView imageView = getView(viewId);
+        imageView.setImageBitmap(bitmap);
         return this;
     }
 
